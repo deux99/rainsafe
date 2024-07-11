@@ -61,14 +61,14 @@ def main_app():
         while not send_code:
             # sms alert is sent 3 times
             times = 0
-            while times < 3:
+            while times < 1:
                 print("Its raining...")
                 # Sending the sms alert using the gateway
                 url_alert=quote(f"!!!!RAIN SAFE ALERT!!!! Please take your clothes, It's RAINING outside. Current Weather: {status[0]}, Description: {status[2]}, Humidity: {status[1]}, Tempreture: {status[3]}")
 
                 sms_gateway = f"https://www.textit.biz/sendmsg?id={user}&pw={pw}&to=0787785324&text={url_alert}"
 
-                requests.post(sms_gateway)
+                requests.get(sms_gateway)
                 times += 1
                 time.sleep(10)
 
@@ -80,12 +80,13 @@ def main_app():
         
         while not send_code2:
                 times2 = 0
-                while times2 < 2:
+                while times2 < 1:
+                    print("Not raining but stay alert")
                     url_alert=quote(f"!!!!RAIN SAFE ALERT!!!! Please be in alert, It may rain in the following hours. Current Weather: {status[0]}, Description: {status[2]}, Humidity: {status[1]}, Tempreture: {status[3]}")
 
                     sms_gateway = f"https://www.textit.biz/sendmsg?id={user}&pw={pw}&to=0787785324&text={url_alert}"
 
-                    requests.post(sms_gateway)
+                    requests.get(sms_gateway)
 
                     times2 += 1
                     time.sleep(10)
@@ -96,11 +97,11 @@ def main_app():
     else:
         # if no rain is detected the trigger will stay doment
         print(f"Trigger Running, Current Weather: {status[0]}, Description: {status[2]}, Humidity: {status[1]}, Tempreture: {status[3]}") 
-        if send_code == True:
-            send_code = not send_code 
-        elif send_code2 == True:
-            send_code2 = not send_code2 
-            
+        if send_code == True or send_code2 == True:
+            send_code = False
+            send_code2 = False
+
+
 # Application is running every minute
 main_app()
 schedule.every(1).minutes.do(main_app)
