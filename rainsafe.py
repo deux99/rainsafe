@@ -24,12 +24,13 @@ pw = os.getenv('PW')
 api = os.getenv('APIKEY')
 url = f"https://api.openweathermap.org/data/2.5/weather?q=Nugegoda,LK&appid={api}&units=metric"
 
+# Status Values
+send_code = False
+send_code2 = False
 
 def main_app():
 
-    # Status Values
-    send_code = False
-    send_code2 = False
+    global send_code, send_code2
 
     # Retrieving data from open weather api
     def current_weather(url):
@@ -49,15 +50,18 @@ def main_app():
         else:
             print("Data retrieval unsuccessful")  
 
+    
+
     #getting the returned values
     status = current_weather(url)     
 
     # Checking conditions whether its raining or not
     if status[0] == "Rain":
-        times = 0
-        while send_code == False:
+        
+        while not send_code:
             # sms alert is sent 3 times
-            while times <= 3:
+            times = 0
+            while times < 3:
                 print("Its raining...")
                 # Sending the sms alert using the gateway
                 url_alert=quote(f"!!!!RAIN SAFE ALERT!!!! Please take your clothes, It's RAINING outside. Current Weather: {status[0]}, Description: {status[2]}, Humidity: {status[1]}, Tempreture: {status[3]}")
@@ -65,25 +69,30 @@ def main_app():
                 sms_gateway = f"https://www.textit.biz/sendmsg?id={user}&pw={pw}&to=0787785324&text={url_alert}"
 
                 requests.post(sms_gateway)
-                time = times + 1
-                time.sleep()
-            # Trigger is Set to send sms only once    
+                times += 1
+                time.sleep(10)
+
+                # Trigger is Set to send sms only once    
             send_code = True
+        print(f"Trigger Running, Current Weather: {status[0]}, Description: {status[2]}, Humidity: {status[1]}, Tempreture: {status[3]}") 
 
     elif status[1] > 80:
-        times2 = 0
-        while send_code2 == False:
-                while times2 <= 2:
+        
+        while not send_code2:
+                times2 = 0
+                while times2 < 2:
                     url_alert=quote(f"!!!!RAIN SAFE ALERT!!!! Please be in alert, It may rain in the following hours. Current Weather: {status[0]}, Description: {status[2]}, Humidity: {status[1]}, Tempreture: {status[3]}")
 
                     sms_gateway = f"https://www.textit.biz/sendmsg?id={user}&pw={pw}&to=0787785324&text={url_alert}"
 
                     requests.post(sms_gateway)
 
-                    time = times2 + 1
-                    time.sleep(60)
+                    times2 += 1
+                    time.sleep(10)
 
                 send_code2 = True
+        print(f"Trigger Running, Current Weather: {status[0]}, Description: {status[2]}, Humidity: {status[1]}, Tempreture: {status[3]}")
+
     else:
         # if no rain is detected the trigger will stay doment
         print(f"Trigger Running, Current Weather: {status[0]}, Description: {status[2]}, Humidity: {status[1]}, Tempreture: {status[3]}") 
