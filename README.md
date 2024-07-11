@@ -158,7 +158,7 @@ while True:
 
 ## License
 
-This project is licensed under the MIT License - see the license file for details.
+This project is licensed under the [MIT License](./license.md) - see the license file for details.
 
 ## Contact
 

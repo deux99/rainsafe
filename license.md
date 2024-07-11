@@ -1,6 +1,6 @@
 MIT License
 
-Copyright (c) 2024 M.D Shal;uka Manodya
+Copyright (c) 2024 M.D Shaluka Manodya
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
