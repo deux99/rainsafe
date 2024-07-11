@@ -100,6 +100,7 @@ def main_app():
             send_code = not send_code 
         elif send_code2 == True:
             send_code2 = not send_code2 
+            
 # Application is running every minute
 main_app()
 schedule.every(1).minutes.do(main_app)
@@ -107,10 +108,3 @@ schedule.every(1).minutes.do(main_app)
 while True:
         schedule.run_pending()
         time.sleep(1)
-
-
-
-    
-
-
-   
